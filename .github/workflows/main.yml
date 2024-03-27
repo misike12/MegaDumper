@@ -1,0 +1,22 @@
+name: Build MegaDumper (x64)
+
+on:
+  push: # Trigger on pushes to any branch
+
+jobs:
+  build:
+    runs-on: windows-latest  # Run on Windows virtual machines
+
+    steps:
+      - uses: actions/checkout@v3 # Checkout code from repository
+
+      - name: Install .NET Framework 2.0 SDK
+        uses: microsoft/dotnet-action@v1
+        with:
+          version: 2.0.9 # Specific version of .NET 2.0 SDK
+
+      - name: Restore dependencies
+        run: msbuild /restore MegaDumper.sln
+
+      - name: Build (x64)
+        run: msbuild /build MegaDumper.sln /platform:x64 /configuration:Release
