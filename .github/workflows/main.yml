@@ -1,4 +1,4 @@
-name: Build MegaDumper (x64)
+name: Build MegaDumper
 
 on:
   push: # Trigger on pushes to any branch
@@ -10,13 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # Checkout code from repository
 
-      - name: Install .NET Framework 2.0 SDK
-        uses: microsoft/dotnet-action@v1
+      - name: Use .NET Core tools
+        uses: actions/setup-dotnet@v3
         with:
-          version: 2.0.9 # Specific version of .NET 2.0 SDK
+          dotnet-version: '2.0.x' # Update as needed for your project
 
       - name: Restore dependencies
-        run: msbuild /restore MegaDumper.sln
+        run: dotnet restore MegaDumper.sln
 
       - name: Build (x64)
-        run: msbuild /build MegaDumper.sln /platform:x64 /configuration:Release
+        run: dotnet build MegaDumper.sln /configuration:Release /platform:x64
+
+      - name: Publish (Optional)
+        # You can add a step to publish the build artifacts here
+        # Only uncomment if you need to publish the built application
+        # run: ...
